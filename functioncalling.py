@@ -1,32 +1,42 @@
 from google import genai
 from google.genai import types
+import json
+import utlis
+
 
 # Define the function declaration for the model
-schedule_meeting_function = {
-    "name": "schedule_meeting",
-    "description": "Schedules a meeting with specified attendees at a given time and date.",
+add_function = {
+    "name": "add",
+    "description": "Adds two numbers.",
     "parameters": {
         "type": "object",
         "properties": {
-            "attendees": {
-                "type": "array",
-                "items": {"type": "string"},
-                "description": "List of people attending the meeting.",
+            "a": {
+                "type": "number",
+                "description": "The first number.",
             },
-            "date": {
-                "type": "string",
-                "description": "Date of the meeting (e.g., '2024-07-29')",
-            },
-            "time": {
-                "type": "string",
-                "description": "Time of the meeting (e.g., '15:00')",
-            },
-            "topic": {
-                "type": "string",
-                "description": "The subject or topic of the meeting.",
+            "b": {
+                "type": "number",
+                "description": "The second number.",
             },
         },
-        "required": ["attendees", "date", "time", "topic"],
+        "required": ["a", "b"],
+    },
+}
+
+sum_function = {
+    "name": "sum",
+    "description": "Calculates the sum of a list of numbers.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "numbers": {
+                "type": "array",
+                "items": {"type": "number"},
+                "description": "List of numbers to sum.",
+            },
+        },
+        "required": ["numbers"],
     },
 }
 
