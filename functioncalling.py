@@ -4,30 +4,24 @@ import json
 import utlis
 
 
-# Define the function declaration for the model
-add_function = {
-    "name": "add",
-    "description": "Adds two numbers.",
-    "parameters": {
+# Function declarations for Gemini
+add_function = types.FunctionDeclaration(
+    name="add",
+    description="Adds two numbers.",
+    parameters={
         "type": "object",
         "properties": {
-            "a": {
-                "type": "number",
-                "description": "The first number.",
-            },
-            "b": {
-                "type": "number",
-                "description": "The second number.",
-            },
+            "a": {"type": "number", "description": "The first number."},
+            "b": {"type": "number", "description": "The second number."},
         },
         "required": ["a", "b"],
     },
-}
+)
 
-sum_function = {
-    "name": "sum",
-    "description": "Calculates the sum of a list of numbers.",
-    "parameters": {
+sum_function = types.FunctionDeclaration(
+    name="sum_list",
+    description="Calculates the sum of a list of numbers.",
+    parameters={
         "type": "object",
         "properties": {
             "numbers": {
@@ -38,27 +32,34 @@ sum_function = {
         },
         "required": ["numbers"],
     },
-}
+)
 
-# Configure the client and tools
 client = genai.Client()
-tools = types.Tool(function_declarations=[schedule_meeting_function])
+tools = types.Tool(function_declarations=[add_function, sum_function])
 config = types.GenerateContentConfig(tools=[tools])
 
-# Send request with function declarations
+# Ask Gemini
 response = client.models.generate_content(
     model="gemini-2.5-flash",
-    contents="Schedule a meeting with Bob and Alice for 03/14/2025 at 10:00 AM about the Q3 planning.",
+    contents="Add 5 and 7",
     config=config,
 )
 
-# Check for a function call
+# Check for function call
 if response.candidates[0].content.parts[0].function_call:
     function_call = response.candidates[0].content.parts[0].function_call
     print(f"Function to call: {function_call.name}")
     print(f"Arguments: {function_call.args}")
-    #  In a real app, you would call your function here:
-    #  result = schedule_meeting(**function_call.args)
+
+    # Dispatch to your Python implementation
+    if function_call.name == "add":
+        result = add(**function_call.args)
+    elif function_call.name == "sum_list":
+        result = sum_list(**function_call.args)
+    else:
+        result = "Unknown function"
+
+    print("Result:", result)
 else:
-    print("No function call found in the response.")
+    print("No function call found.")
     print(response.text)
