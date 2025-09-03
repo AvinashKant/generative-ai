@@ -3,7 +3,6 @@ from google.genai import types
 import json
 import utlis
 
-
 # Function declarations for Gemini
 add_function = types.FunctionDeclaration(
     name="add",
@@ -51,11 +50,11 @@ if response.candidates[0].content.parts[0].function_call:
     print(f"Function to call: {function_call.name}")
     print(f"Arguments: {function_call.args}")
 
-    # Dispatch to your Python implementation
+    # Dispatch to your Python implementation from utlis
     if function_call.name == "add":
-        result = add(**function_call.args)
+        result = utlis.add(**function_call.args)
     elif function_call.name == "sum_list":
-        result = sum_list(**function_call.args)
+        result = utlis.sum_list(**function_call.args)
     else:
         result = "Unknown function"
 
