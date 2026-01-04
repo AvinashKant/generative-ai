@@ -2,10 +2,6 @@ import pandas as pd
 import os
 
 def read_users_csv(file_path):
-    """
-    Reads a CSV file into a pandas DataFrame and prints the contents.
-    Includes error handling for file not found.
-    """
     try:
         # Check if the file exists
         if not os.path.exists(file_path):
