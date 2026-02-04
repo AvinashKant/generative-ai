@@ -39,7 +39,7 @@ class FastGeminiAgent:
 
 
 def run_agent():
-    if GOOGLE_API_KEY == "AIzaSyCpiTLz5SRJR_yHDiEye-NetbFQLKMNnGU":
+    if GOOGLE_API_KEY == "":
         print("Error: Please set your Gemini API key in the previous cell (cell Umtu7hPNlhl8).")
         print("You can get an API key from https://aistudio.google.com/app/apikey")
         return
