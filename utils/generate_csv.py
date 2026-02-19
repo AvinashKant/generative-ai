@@ -5,7 +5,6 @@ import string
 def generate_csv(file_name, schema, total_records, null_percent):
     total_cols = len(schema)
     total_cells = total_records * total_cols
-    
     # Calculate how many total cells should be null
     null_count = int(total_cells * (null_percent / 100))
     
